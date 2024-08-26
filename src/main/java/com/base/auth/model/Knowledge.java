@@ -19,11 +19,7 @@ public class Knowledge extends Auditable<String>{
     @GenericGenerator(name = "idGenerator", strategy = "com.base.auth.service.id.IdGenerator")
     @GeneratedValue(generator = "idGenerator")
     private Long id;
-
     private String name;
-
     private String content;
-
-
     private Date publishDate;
 }

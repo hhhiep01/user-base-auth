@@ -67,7 +67,7 @@ public class KnowledgeController extends ABasicController {
         return apiMessageDto;
     }
     @GetMapping(value = "/get/{id}", produces= MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('KN_G')")
+    @PreAuthorize("hasRole('KN_V')")
     public ApiMessageDto<Knowledge> get(@PathVariable("id")  Long id) {
         ApiMessageDto<Knowledge> apiMessageDto = new ApiMessageDto<>();
         Knowledge knowledge =knowledgeRepository.findById(id).orElse(null);
