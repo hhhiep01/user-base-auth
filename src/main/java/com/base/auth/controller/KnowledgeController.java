@@ -1,20 +1,18 @@
 package com.base.auth.controller;
 
 
-import com.base.auth.controller.ABasicController;
 import com.base.auth.dto.ApiMessageDto;
 import com.base.auth.dto.ErrorCode;
 import com.base.auth.dto.ResponseListDto;
 import com.base.auth.dto.knowledge.KnowledgeDto;
+import com.base.auth.exception.UnauthorizationException;
 import com.base.auth.form.knowledge.CreateKnowledgeForm;
 import com.base.auth.form.knowledge.UpdateKnowledgeForm;
 import com.base.auth.mapper.KnowledgeMapper;
+import com.base.auth.model.Group;
 import com.base.auth.model.Knowledge;
 import com.base.auth.model.criteria.KnowledgeCriteria;
 import com.base.auth.repository.KnowledgeRepository;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -45,12 +43,10 @@ public class KnowledgeController extends ABasicController {
         ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
 
         Knowledge knowledge = knowledgeMapper.fromCreateKnowledgeFormToEntityKnowledge(createKnowledgeForm);
-        if (knowledge != null) {
-            knowledgeRepository.save(knowledge);
-            apiMessageDto.setMessage("Create Success");
-        } else {
-            apiMessageDto.setMessage("Create Failed");
-        }
+
+        knowledgeRepository.save(knowledge);
+        apiMessageDto.setMessage("Create Success");
+
 
         return apiMessageDto;
     }
@@ -68,6 +64,15 @@ public class KnowledgeController extends ABasicController {
 
         apiMessageDto.setData(responseListDto);
         apiMessageDto.setMessage("Get list address success");
+        return apiMessageDto;
+    }
+    @GetMapping(value = "/get/{id}", produces= MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('KN_G')")
+    public ApiMessageDto<Knowledge> get(@PathVariable("id")  Long id) {
+        ApiMessageDto<Knowledge> apiMessageDto = new ApiMessageDto<>();
+        Knowledge knowledge =knowledgeRepository.findById(id).orElse(null);
+        apiMessageDto.setData(knowledge);
+        apiMessageDto.setMessage("Get knowledge success");
         return apiMessageDto;
     }
 
