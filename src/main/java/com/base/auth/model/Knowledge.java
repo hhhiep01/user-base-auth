@@ -24,7 +24,6 @@ public class Knowledge extends Auditable<String>{
 
     private String content;
 
-    private String knowledgeStatus;
 
     private Date publishDate;
 }

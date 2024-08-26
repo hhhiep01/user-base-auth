@@ -16,6 +16,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
@@ -30,10 +31,12 @@ import java.util.List;
 @RequestMapping("/v1/knowledge")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @Slf4j
-@RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+
 public class KnowledgeController extends ABasicController {
+
+    @Autowired
     KnowledgeRepository knowledgeRepository;
+    @Autowired
     KnowledgeMapper knowledgeMapper;
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)

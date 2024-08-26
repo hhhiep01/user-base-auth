@@ -24,9 +24,6 @@ public class UpdateKnowledgeForm {
     @ApiModelProperty(name = "content", required = true)
     private String content;
 
-    @NotEmpty(message = "knowledgeStatus cant not be null")
-    @ApiModelProperty(name = "knowledgeStatus", required = true)
-    private String knowledgeStatus;
 
     @ApiModelProperty(name ="publishDate")
     private Date publishDate;

@@ -15,7 +15,6 @@ public interface KnowledgeMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "content", target = "content")
-    @Mapping(source = "status", target = "knowledgeStatus")
     @Mapping(source = "publishDate", target = "publishDate")
     @BeanMapping(ignoreByDefault = true)
     @Named("fromEntityToKnowledgeDto")
@@ -23,7 +22,6 @@ public interface KnowledgeMapper {
 
     @Mapping(source = "name", target = "name")
     @Mapping(source = "content", target = "content")
-    @Mapping(source = "knowledgeStatus", target = "knowledgeStatus")
     @Mapping(source = "publishDate", target = "publishDate")
     @BeanMapping(ignoreByDefault = true)
     @Named("fromCreateKnowledgeFormToEntityKnowledge")
@@ -35,7 +33,6 @@ public interface KnowledgeMapper {
 
     @Mapping(source = "name", target = "name")
     @Mapping(source = "content", target = "content")
-    @Mapping(source = "knowledgeStatus", target = "knowledgeStatus")
     @Mapping(source = "publishDate", target = "publishDate")
     @BeanMapping(ignoreByDefault = true)
     void fromUpdateKnowledgeFormToEntity(UpdateKnowledgeForm updateKnowledgeForm, @MappingTarget Knowledge knowledge);

@@ -17,9 +17,6 @@ public class KnowledgeDto {
     @ApiModelProperty(name = "content")
     private String content;
 
-    @ApiModelProperty(name = "knowledgeStatus")
-    private String knowledgeStatus;
-
     @ApiModelProperty(name = "publishDate")
     private Date publishDate;
 }
