@@ -1,6 +1,5 @@
 package com.base.auth.dto.group;
 
-import com.base.auth.dto.ABasicAdminDto;
 import com.base.auth.model.Permission;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -8,7 +7,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class GroupDto extends ABasicAdminDto {
+public class GroupDto {
     @ApiModelProperty(name = "id")
     private Long id;
     @ApiModelProperty(name = "name")

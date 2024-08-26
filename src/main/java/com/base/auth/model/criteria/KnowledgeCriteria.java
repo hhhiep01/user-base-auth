@@ -17,11 +17,7 @@ import java.util.List;
 @Data
 public class KnowledgeCriteria {
     private Long id;
-
     private String name;
-
-
-
     public Specification<Knowledge> getSpecification()
     {
         return new Specification<Knowledge>(){
@@ -39,8 +35,5 @@ public class KnowledgeCriteria {
             }
 
         };
-
     }
-
-
 }

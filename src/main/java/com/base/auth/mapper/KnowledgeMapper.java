@@ -16,7 +16,9 @@ public interface KnowledgeMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "content", target = "content")
+    @Mapping(source = "status", target = "status")
     @Mapping(source = "publishDate", target = "publishDate")
+    @Mapping(source = "createdDate", target = "createdDate")
     @BeanMapping(ignoreByDefault = true)
     @Named("fromEntityToKnowledgeDto")
     KnowledgeDto fromEntityToKnowledgeDto(Knowledge knowledge);
@@ -28,9 +30,8 @@ public interface KnowledgeMapper {
     @Named("fromCreateKnowledgeFormToEntityKnowledge")
     Knowledge fromCreateKnowledgeFormToEntityKnowledge(CreateKnowledgeForm createKnowledgeForm);
 
-
     @IterableMapping(elementTargetType = KnowledgeDto.class, qualifiedByName = "fromEntityToKnowledgeDto")
-    List<KnowledgeDto> fromEntityToKnowledgeDtoList(List<Knowledge> addresses);
+    List<KnowledgeDto> fromEntityToKnowledgeDtoList(List<Knowledge> knowledgeList);
 
     @Mapping(source = "name", target = "name")
     @Mapping(source = "content", target = "content")

@@ -1,12 +1,12 @@
 package com.base.auth.dto.knowledge;
 
+import com.base.auth.dto.ABasicAdminDto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
 import java.util.Date;
 
 @Data
-public class KnowledgeDto {
+public class KnowledgeDto extends ABasicAdminDto {
     @ApiModelProperty(name = "id")
     private Long id;
     @ApiModelProperty(name = "name")
