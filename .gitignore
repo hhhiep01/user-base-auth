@@ -31,3 +31,11 @@ build/
 
 ### VS Code ###
 .vscode/
+
+/.idea/modules.xml
+/.idea/uiDesigner.xml
+/.idea/vcs.xml
+/logs/log.1.log
+/logs/log.2.log
+/logs/log.log
+
