@@ -95,4 +95,10 @@ public class ErrorCode {
      *
      */
     public static final String  ERROR_DB_QUERY = "ERROR-DB-QUERY-0000";
+
+    /**
+     * Starting error code Knowledge
+     * */
+    public static final String KNOWLEDGE_ERROR_NOT_FOUND = "ERROR-KNOWLEDGE-0000";
+
 }
