@@ -41,13 +41,9 @@ public class KnowledgeController extends ABasicController {
     @PreAuthorize("hasRole('KN_C')")
     public ApiMessageDto<String> create(@Valid @RequestBody CreateKnowledgeForm createKnowledgeForm, BindingResult bindingResult) {
         ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
-
         Knowledge knowledge = knowledgeMapper.fromCreateKnowledgeFormToEntityKnowledge(createKnowledgeForm);
-
         knowledgeRepository.save(knowledge);
         apiMessageDto.setMessage("Create Success");
-
-
         return apiMessageDto;
     }
 
@@ -61,7 +57,6 @@ public class KnowledgeController extends ABasicController {
         responseListDto.setContent(knowledgeDtos);
         responseListDto.setTotalPages(listKnowLedge.getTotalPages());
         responseListDto.setTotalElements(listKnowLedge.getTotalElements());
-
         apiMessageDto.setData(responseListDto);
         apiMessageDto.setMessage("Get list address success");
         return apiMessageDto;
