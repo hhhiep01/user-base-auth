@@ -20,7 +20,6 @@ public class KnowledgeCriteria {
 
     private String name;
 
-    private String content;
 
 
     public Specification<Knowledge> getSpecification()
@@ -35,9 +34,6 @@ public class KnowledgeCriteria {
                 }
                 if(!StringUtils.isBlank(getName())){
                     predicates.add(cb.like(cb.lower(root.get("name")), "%"+getName().toLowerCase()+"%"));
-                }
-                if(!StringUtils.isBlank(getContent())){
-                    predicates.add(cb.like(cb.lower(root.get("content")), "%"+getContent().toLowerCase()+"%"));
                 }
                 return cb.and(predicates.toArray(new Predicate[predicates.size()]));
             }
