@@ -147,7 +147,7 @@ public class UserServiceImpl implements UserDetailsService {
         responseTypes.add("code");
         Map<String, Serializable> extensionProperties = new HashMap<>();
 
-        Account user = accountRepository.findAccountByCitizenIDCardAndIssuanceDate(citizenIDCard,issuanceDate);
+        Account user = accountRepository.findAccountByCitizenIdCardAndIssuanceDate(citizenIDCard,issuanceDate);
         if (user == null || !Objects.equals(UserBaseConstant.STATUS_ACTIVE, user.getStatus())) {
             log.error("Invalid CCCD or date of issue.");
             throw new UsernameNotFoundException("Invalid CCCD or date of issue.");
@@ -163,11 +163,11 @@ public class UserServiceImpl implements UserDetailsService {
             log.error("User had been locked");
             enabled = false;
         }
-        requestParameters.put("citizenIDCard", user.getCitizenIDCard());
+        requestParameters.put("citizenIDCard", user.getCitizenIdCard());
         requestParameters.put("ngayCap", String.valueOf(user.getIssuanceDate()));
         Set<GrantedAuthority> grantedAuthorities = getAccountPermission(user);
         UserDetails userDetails = new org.springframework.security.core.userdetails.User(
-                user.getCitizenIDCard(),
+                user.getCitizenIdCard(),
                 user.getPassword(),
                 enabled,
                 true,

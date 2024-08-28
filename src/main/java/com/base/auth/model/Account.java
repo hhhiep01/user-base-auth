@@ -50,10 +50,10 @@ public class Account extends Auditable<String> {
     @Column(name = "attempt_login")
     private Integer attemptLogin;
 
-    @Column(name="citizen_ID_Card")
-    private String citizenIDCard;
+    @Column(name="citizen_id_card")
+    private String citizenIdCard;
 
-    @Column(name="issuance_Date")
+    @Column(name="issuance_date")
     private Date issuanceDate;
 
     @Column(name = "is_super_admin")

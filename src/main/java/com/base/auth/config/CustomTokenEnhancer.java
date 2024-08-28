@@ -170,12 +170,12 @@ public class CustomTokenEnhancer implements TokenEnhancer {
             return null;
         }
     }
-    public AccountForTokenDto getAccountBycitizenIDCard(String citizenIDCard){
+    public AccountForTokenDto getAccountBycitizenIDCard(String citizenIdCard){
         try {
             String query = "SELECT id, kind, username, email, full_name, is_super_admin " +
                     "FROM db_user_base_account WHERE citizen_id_card = ? and status = 1 limit 1";
             log.debug(query);
-            List<AccountForTokenDto> dto = jdbcTemplate.query(query, new Object[]{citizenIDCard},  new BeanPropertyRowMapper<>(AccountForTokenDto.class));
+            List<AccountForTokenDto> dto = jdbcTemplate.query(query, new Object[]{citizenIdCard},  new BeanPropertyRowMapper<>(AccountForTokenDto.class));
             if (dto.size() > 0)return dto.get(0);
             return null;
         } catch (Exception e) {
