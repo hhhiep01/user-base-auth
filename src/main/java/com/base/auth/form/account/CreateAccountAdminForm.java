@@ -36,9 +36,9 @@ public class CreateAccountAdminForm {
     @NotNull(message = "groupId cant not be null")
     @ApiModelProperty(name = "groupId", required = true)
     private Long groupId;
-    @ApiModelProperty(name="citizen_ID_Card")
+    @ApiModelProperty(name="citizenIdCard")
     private String citizenIdCard;
-    @ApiModelProperty(name="issuance_Date")
+    @ApiModelProperty(name="issuanceDate")
     private Date issuanceDate;
 
 }

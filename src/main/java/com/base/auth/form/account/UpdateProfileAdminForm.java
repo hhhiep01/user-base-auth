@@ -21,8 +21,8 @@ public class UpdateProfileAdminForm {
     private String fullName;
     @ApiModelProperty(name = "avatarPath")
     private String avatarPath;
-    @ApiModelProperty(name="citizen_ID_Card")
+    @ApiModelProperty(name="citizenIdCard")
     private String citizenIdCard;
-    @ApiModelProperty(name="issuance_Date")
+    @ApiModelProperty(name="issuanceDate")
     private Date issuanceDate;
 }
