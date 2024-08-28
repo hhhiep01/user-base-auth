@@ -145,7 +145,7 @@ public class UserServiceImpl implements UserDetailsService {
         responseTypes.add("code");
         Map<String, Serializable> extensionProperties = new HashMap<>();
 
-        Account user = accountRepository.findAccountByCitizenIdCardAndIssuanceDate(citizenIDCard,issuanceDate);
+        Account user = accountRepository.findFirstByCitizenIdCardAndIssuanceDate(citizenIDCard,issuanceDate);
         if (user == null || !Objects.equals(UserBaseConstant.STATUS_ACTIVE, user.getStatus())) {
             log.error("Invalid citizen id card or date of issue.");
             throw new UsernameNotFoundException("Invalid citizen id card or date of issue.");

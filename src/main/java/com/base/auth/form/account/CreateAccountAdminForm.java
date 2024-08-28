@@ -7,6 +7,7 @@ import lombok.Data;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @Data
 @ApiModel
@@ -35,5 +36,9 @@ public class CreateAccountAdminForm {
     @NotNull(message = "groupId cant not be null")
     @ApiModelProperty(name = "groupId", required = true)
     private Long groupId;
+    @ApiModelProperty(name="citizen_ID_Card")
+    private String citizenIdCard;
+    @ApiModelProperty(name="issuance_Date")
+    private Date issuanceDate;
 
 }

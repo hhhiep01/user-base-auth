@@ -90,6 +90,12 @@ public class AccountController extends ABasicController{
             apiMessageDto.setCode(ErrorCode.ACCOUNT_ERROR_USERNAME_EXIST);
             return apiMessageDto;
         }
+        account = accountRepository.findFirstByCitizenIdCardAndIssuanceDate(createAccountAdminForm.getCitizenIdCard(), createAccountAdminForm.getIssuanceDate());
+        if (account != null) {
+            apiMessageDto.setResult(false);
+            apiMessageDto.setCode(ErrorCode.ACCOUNT_ERROR_CITIZEN_ID_CARD_EXIST);
+            return apiMessageDto;
+        }
         Group group = groupRepository.findById(createAccountAdminForm.getGroupId()).orElse(null);
         if (group == null) {
             apiMessageDto.setResult(false);
@@ -105,6 +111,8 @@ public class AccountController extends ABasicController{
         account.setGroup(group);
         account.setStatus(createAccountAdminForm.getStatus());
         account.setPhone(createAccountAdminForm.getPhone());
+        account.setCitizenIdCard(createAccountAdminForm.getCitizenIdCard());
+        account.setIssuanceDate(createAccountAdminForm.getIssuanceDate());
         accountRepository.save(account);
 
         apiMessageDto.setMessage("Create account admin success");
@@ -215,6 +223,12 @@ public class AccountController extends ABasicController{
             apiMessageDto.setCode(ErrorCode.ACCOUNT_ERROR_NOT_FOUND);
             return apiMessageDto;
         }
+        account = accountRepository.findFirstByCitizenIdCardAndIssuanceDate(updateProfileAdminForm.getCitizenIdCard(), updateProfileAdminForm.getIssuanceDate());
+        if (account != null) {
+            apiMessageDto.setResult(false);
+            apiMessageDto.setCode(ErrorCode.ACCOUNT_ERROR_CITIZEN_ID_CARD_EXIST);
+            return apiMessageDto;
+        }
         if(!passwordEncoder.matches(updateProfileAdminForm.getOldPassword(), account.getPassword())){
             apiMessageDto.setResult(false);
             apiMessageDto.setCode(ErrorCode.ACCOUNT_ERROR_WRONG_PASSWORD);
@@ -227,7 +241,7 @@ public class AccountController extends ABasicController{
         account.setPhone(updateProfileAdminForm.getPhone());
         account.setFullName(updateProfileAdminForm.getFullName());
         account.setAvatarPath(updateProfileAdminForm.getAvatarPath());
-        account.setCitizenIdCard(updateProfileAdminForm.getCitizenIDCard());
+        account.setCitizenIdCard(updateProfileAdminForm.getCitizenIdCard());
         account.setIssuanceDate(updateProfileAdminForm.getIssuanceDate());
         accountRepository.save(account);
 
