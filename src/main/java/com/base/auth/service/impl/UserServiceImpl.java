@@ -4,8 +4,6 @@ import com.base.auth.config.SecurityConstant;
 import com.base.auth.constant.UserBaseConstant;
 import com.base.auth.jwt.UserBaseJwt;
 import com.base.auth.model.Account;
-import com.base.auth.model.Group;
-import com.base.auth.model.User;
 import com.base.auth.repository.AccountRepository;
 import com.base.auth.repository.GroupRepository;
 import com.base.auth.repository.UserRepository;
@@ -139,7 +137,7 @@ public class UserServiceImpl implements UserDetailsService {
 
     public OAuth2AccessToken getAccessTokenForCmnd(ClientDetails client, TokenRequest tokenRequest, String citizenIDCard, Date issuanceDate, String password, AuthorizationServerTokenServices tokenServices) throws GeneralSecurityException, IOException {
         Map<String, String> requestParameters = new HashMap<>();
-        requestParameters.put("grantType", SecurityConstant.GRANT_TYPE_CITIZENIDCARD);
+        requestParameters.put("grantType", SecurityConstant.GRANT_TYPE_CITIZEN_ID_CARD);
 
         String clientId = client.getClientId();
         boolean approved = true;
@@ -163,7 +161,7 @@ public class UserServiceImpl implements UserDetailsService {
             log.error("User had been locked");
             enabled = false;
         }
-        requestParameters.put("citizenIDCard", user.getCitizenIdCard());
+        requestParameters.put("citizenIdCard", user.getCitizenIdCard());
         requestParameters.put("ngayCap", String.valueOf(user.getIssuanceDate()));
         Set<GrantedAuthority> grantedAuthorities = getAccountPermission(user);
         UserDetails userDetails = new org.springframework.security.core.userdetails.User(

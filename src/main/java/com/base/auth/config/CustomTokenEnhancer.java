@@ -1,8 +1,6 @@
 package com.base.auth.config;
 
-import com.base.auth.constant.UserBaseConstant;
 import com.base.auth.dto.AccountForTokenDto;
-import com.base.auth.dto.UserForTokenDto;
 import com.base.auth.model.Permission;
 import com.base.auth.utils.ZipUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,9 +37,9 @@ public class CustomTokenEnhancer implements TokenEnhancer {
             if(grantType.equals(SecurityConstant.GRANT_TYPE_USER) ){
                 String phone = authentication.getOAuth2Request().getRequestParameters().get("phone");
                 additionalInfo = getAdditionalUserInfo(phone, grantType);
-            }else if(grantType.equals(SecurityConstant.GRANT_TYPE_CITIZENIDCARD)){
-                String citizenIDCard = authentication.getOAuth2Request().getRequestParameters().get("citizenIDCard");
-                additionalInfo = getAdditionalUserInfocitizenIDCard(citizenIDCard, grantType);
+            }else if(grantType.equals(SecurityConstant.GRANT_TYPE_CITIZEN_ID_CARD)){
+                String citizenIdCard = authentication.getOAuth2Request().getRequestParameters().get("citizenIdCard");
+                additionalInfo = getAdditionalUserInfoCitizenIdCard(citizenIdCard, grantType);
             }
         }
         ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
@@ -121,9 +119,9 @@ public class CustomTokenEnhancer implements TokenEnhancer {
         return additionalInfo;
     }
 
-    private Map<String, Object> getAdditionalUserInfocitizenIDCard(String citizenIDCard, String grantType) {
+    private Map<String, Object> getAdditionalUserInfoCitizenIdCard(String citizenIdCard, String grantType) {
         Map<String, Object> additionalInfo = new HashMap<>();
-        AccountForTokenDto a = getAccountBycitizenIDCard(citizenIDCard);
+        AccountForTokenDto a = getAccountBycitizenIdCard(citizenIdCard);
 
         if (a != null) {
             Long userId = a.getId();
@@ -138,7 +136,7 @@ public class CustomTokenEnhancer implements TokenEnhancer {
             String tenantId = "";
             additionalInfo.put("user_id", a.getId());
             additionalInfo.put("user_kind", a.getKind());
-            additionalInfo.put("grant_type", grantType == null ? SecurityConstant.GRANT_TYPE_CITIZENIDCARD : grantType);
+            additionalInfo.put("grant_type", grantType == null ? SecurityConstant.GRANT_TYPE_CITIZEN_ID_CARD : grantType);
             additionalInfo.put("tenant_info", tenantId);
             String DELIM = "|";
             String additionalInfoStr = ZipUtils.zipString(userId + DELIM
@@ -147,7 +145,7 @@ public class CustomTokenEnhancer implements TokenEnhancer {
                     + pemission + DELIM
                     + deviceId + DELIM
                     + userKind + DELIM
-                    + citizenIDCard + DELIM
+                    + citizenIdCard + DELIM
                     + tabletKind + DELIM
                     + orderId + DELIM
                     + isSuperAdmin + DELIM
@@ -170,7 +168,7 @@ public class CustomTokenEnhancer implements TokenEnhancer {
             return null;
         }
     }
-    public AccountForTokenDto getAccountBycitizenIDCard(String citizenIdCard){
+    public AccountForTokenDto getAccountBycitizenIdCard(String citizenIdCard){
         try {
             String query = "SELECT id, kind, username, email, full_name, is_super_admin " +
                     "FROM db_user_base_account WHERE citizen_id_card = ? and status = 1 limit 1";

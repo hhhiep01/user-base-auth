@@ -42,8 +42,8 @@ public class CustomTokenGranter extends AbstractTokenGranter {
         String grantType = tokenRequest.getGrantType();
         log.info("Grant type received: " + grantType);
         try {
-            if(SecurityConstant.GRANT_TYPE_CITIZENIDCARD.equalsIgnoreCase(tokenRequest.getGrantType())){
-                String cccd = tokenRequest.getRequestParameters().get("citizenIDCard");
+            if(SecurityConstant.GRANT_TYPE_CITIZEN_ID_CARD.equalsIgnoreCase(tokenRequest.getGrantType())){
+                String cccd = tokenRequest.getRequestParameters().get("citizenIdCard");
                 String ngayCapStr  = tokenRequest.getRequestParameters().get("ngayCap");
 
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
