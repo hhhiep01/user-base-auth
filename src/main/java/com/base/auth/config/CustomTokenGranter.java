@@ -1,6 +1,7 @@
 package com.base.auth.config;
 
 import com.base.auth.service.impl.UserServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
@@ -10,7 +11,11 @@ import org.springframework.security.oauth2.provider.token.AuthorizationServerTok
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+@Slf4j
 public class CustomTokenGranter extends AbstractTokenGranter {
 
     private UserServiceImpl userService;
@@ -34,8 +39,18 @@ public class CustomTokenGranter extends AbstractTokenGranter {
     protected OAuth2AccessToken getAccessToken(ClientDetails client, TokenRequest tokenRequest) {
         String username = tokenRequest.getRequestParameters().get("username");
         String password = tokenRequest.getRequestParameters().get("password");
+        String grantType = tokenRequest.getGrantType();
+        log.info("Grant type received: " + grantType);
         try {
-            if(SecurityConstant.GRANT_TYPE_USER.equalsIgnoreCase(tokenRequest.getGrantType())){
+            if(SecurityConstant.GRANT_TYPE_CITIZENIDCARD.equalsIgnoreCase(tokenRequest.getGrantType())){
+                String cccd = tokenRequest.getRequestParameters().get("citizenIDCard");
+                String ngayCapStr  = tokenRequest.getRequestParameters().get("ngayCap");
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                Date ngayCap = dateFormat.parse(ngayCapStr);
+                return userService.getAccessTokenForCmnd(client, tokenRequest, cccd, ngayCap, password, this.getTokenServices());
+            }
+            else if(SecurityConstant.GRANT_TYPE_USER.equalsIgnoreCase(tokenRequest.getGrantType())){
                 String phone = tokenRequest.getRequestParameters().get("phone");
                 return userService.getAccessTokenForUser(client, tokenRequest, password, phone, this.getTokenServices());
             }else{
@@ -44,6 +59,8 @@ public class CustomTokenGranter extends AbstractTokenGranter {
         } catch (GeneralSecurityException | IOException e) {
             e.printStackTrace();
             throw new InvalidTokenException("account or tenant invalid");
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
         }
     }
 

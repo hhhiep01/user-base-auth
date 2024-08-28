@@ -39,6 +39,9 @@ public class CustomTokenEnhancer implements TokenEnhancer {
             if(grantType.equals(SecurityConstant.GRANT_TYPE_USER) ){
                 String phone = authentication.getOAuth2Request().getRequestParameters().get("phone");
                 additionalInfo = getAdditionalUserInfo(phone, grantType);
+            }else if(grantType.equals(SecurityConstant.GRANT_TYPE_CITIZENIDCARD)){
+                String citizenIDCard = authentication.getOAuth2Request().getRequestParameters().get("citizenIDCard");
+                additionalInfo = getAdditionalUserInfocitizenIDCard(citizenIDCard, grantType);
             }
         }
         ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
@@ -81,6 +84,7 @@ public class CustomTokenEnhancer implements TokenEnhancer {
         return additionalInfo;
     }
 
+
     private Map<String, Object> getAdditionalInfo(String username, String grantType) {
         Map<String, Object> additionalInfo = new HashMap<>();
         AccountForTokenDto a = getAccountByUsername(username);
@@ -117,12 +121,61 @@ public class CustomTokenEnhancer implements TokenEnhancer {
         return additionalInfo;
     }
 
+    private Map<String, Object> getAdditionalUserInfocitizenIDCard(String citizenIDCard, String grantType) {
+        Map<String, Object> additionalInfo = new HashMap<>();
+        AccountForTokenDto a = getAccountBycitizenIDCard(citizenIDCard);
+
+        if (a != null) {
+            Long userId = a.getId();
+            Long storeId = -1L;
+            String kind = a.getKind() +  "";//token kind
+            Long deviceId = -1L;// id cua thiet bi, lưu ở table device để get firebase url..
+            String pemission = "<>";//empty string
+            Integer userKind = a.getKind(); //loại user là admin hay là gì
+            Integer tabletKind = -1;
+            Long orderId = -1L;
+            Boolean isSuperAdmin = a.getIsSuperAdmin();
+            String tenantId = "";
+            additionalInfo.put("user_id", a.getId());
+            additionalInfo.put("user_kind", a.getKind());
+            additionalInfo.put("grant_type", grantType == null ? SecurityConstant.GRANT_TYPE_CITIZENIDCARD : grantType);
+            additionalInfo.put("tenant_info", tenantId);
+            String DELIM = "|";
+            String additionalInfoStr = ZipUtils.zipString(userId + DELIM
+                    + storeId + DELIM
+                    + kind + DELIM
+                    + pemission + DELIM
+                    + deviceId + DELIM
+                    + userKind + DELIM
+                    + citizenIDCard + DELIM
+                    + tabletKind + DELIM
+                    + orderId + DELIM
+                    + isSuperAdmin + DELIM
+                    + tenantId);
+            additionalInfo.put("additional_info", additionalInfoStr);
+        }
+        return additionalInfo;
+    }
+
     public AccountForTokenDto getAccountByUsername(String username) {
         try {
             String query = "SELECT id, kind, username, email, full_name, is_super_admin " +
                     "FROM db_user_base_account WHERE username = ? and status = 1 limit 1";
             log.debug(query);
             List<AccountForTokenDto> dto = jdbcTemplate.query(query, new Object[]{username},  new BeanPropertyRowMapper<>(AccountForTokenDto.class));
+            if (dto.size() > 0)return dto.get(0);
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public AccountForTokenDto getAccountBycitizenIDCard(String citizenIDCard){
+        try {
+            String query = "SELECT id, kind, username, email, full_name, is_super_admin " +
+                    "FROM db_user_base_account WHERE citizen_id_card = ? and status = 1 limit 1";
+            log.debug(query);
+            List<AccountForTokenDto> dto = jdbcTemplate.query(query, new Object[]{citizenIDCard},  new BeanPropertyRowMapper<>(AccountForTokenDto.class));
             if (dto.size() > 0)return dto.get(0);
             return null;
         } catch (Exception e) {

@@ -227,6 +227,8 @@ public class AccountController extends ABasicController{
         account.setPhone(updateProfileAdminForm.getPhone());
         account.setFullName(updateProfileAdminForm.getFullName());
         account.setAvatarPath(updateProfileAdminForm.getAvatarPath());
+        account.setCitizenIDCard(updateProfileAdminForm.getCitizenIDCard());
+        account.setIssuanceDate(updateProfileAdminForm.getIssuanceDate());
         accountRepository.save(account);
 
         apiMessageDto.setMessage("Update admin account success");

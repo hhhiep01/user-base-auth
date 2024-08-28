@@ -137,6 +137,53 @@ public class UserServiceImpl implements UserDetailsService {
         return tokenServices.createAccessToken(auth);
     }
 
+    public OAuth2AccessToken getAccessTokenForCmnd(ClientDetails client, TokenRequest tokenRequest, String citizenIDCard, Date issuanceDate, String password, AuthorizationServerTokenServices tokenServices) throws GeneralSecurityException, IOException {
+        Map<String, String> requestParameters = new HashMap<>();
+        requestParameters.put("grantType", SecurityConstant.GRANT_TYPE_CITIZENIDCARD);
+
+        String clientId = client.getClientId();
+        boolean approved = true;
+        Set<String> responseTypes = new HashSet<>();
+        responseTypes.add("code");
+        Map<String, Serializable> extensionProperties = new HashMap<>();
+
+        Account user = accountRepository.findAccountByCitizenIDCardAndIssuanceDate(citizenIDCard,issuanceDate);
+        if (user == null || !Objects.equals(UserBaseConstant.STATUS_ACTIVE, user.getStatus())) {
+            log.error("Invalid CCCD or date of issue.");
+            throw new UsernameNotFoundException("Invalid CCCD or date of issue.");
+        }
+
+        // Kiểm tra mật khẩu
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            log.error("Invalid password.");
+            throw new UsernameNotFoundException("Invalid password.");
+        }
+        boolean enabled = true;
+        if (user.getStatus() != 1) {
+            log.error("User had been locked");
+            enabled = false;
+        }
+        requestParameters.put("citizenIDCard", user.getCitizenIDCard());
+        requestParameters.put("ngayCap", String.valueOf(user.getIssuanceDate()));
+        Set<GrantedAuthority> grantedAuthorities = getAccountPermission(user);
+        UserDetails userDetails = new org.springframework.security.core.userdetails.User(
+                user.getCitizenIDCard(),
+                user.getPassword(),
+                enabled,
+                true,
+                true,
+                true,
+                grantedAuthorities
+        );
+        OAuth2Request oAuth2Request = new OAuth2Request(requestParameters, clientId,
+                userDetails.getAuthorities(), approved, client.getScope(),
+                client.getResourceIds(), null, responseTypes, extensionProperties);
+
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        OAuth2Authentication auth = new OAuth2Authentication(oAuth2Request, authenticationToken);
+        return tokenServices.createAccessToken(auth);
+    }
+
     public UserBaseJwt getAddInfoFromToken() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
