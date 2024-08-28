@@ -147,8 +147,8 @@ public class UserServiceImpl implements UserDetailsService {
 
         Account user = accountRepository.findAccountByCitizenIdCardAndIssuanceDate(citizenIDCard,issuanceDate);
         if (user == null || !Objects.equals(UserBaseConstant.STATUS_ACTIVE, user.getStatus())) {
-            log.error("Invalid CCCD or date of issue.");
-            throw new UsernameNotFoundException("Invalid CCCD or date of issue.");
+            log.error("Invalid citizen id card or date of issue.");
+            throw new UsernameNotFoundException("Invalid citizen id card or date of issue.");
         }
 
         // Kiểm tra mật khẩu
@@ -161,8 +161,8 @@ public class UserServiceImpl implements UserDetailsService {
             log.error("User had been locked");
             enabled = false;
         }
-        requestParameters.put("citizenIdCard", user.getCitizenIdCard());
-        requestParameters.put("ngayCap", String.valueOf(user.getIssuanceDate()));
+        requestParameters.put("citizen_id_card", user.getCitizenIdCard());
+        requestParameters.put("issuance_date", String.valueOf(user.getIssuanceDate()));
         Set<GrantedAuthority> grantedAuthorities = getAccountPermission(user);
         UserDetails userDetails = new org.springframework.security.core.userdetails.User(
                 user.getCitizenIdCard(),

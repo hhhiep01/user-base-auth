@@ -38,7 +38,7 @@ public class CustomTokenEnhancer implements TokenEnhancer {
                 String phone = authentication.getOAuth2Request().getRequestParameters().get("phone");
                 additionalInfo = getAdditionalUserInfo(phone, grantType);
             }else if(grantType.equals(SecurityConstant.GRANT_TYPE_CITIZEN_ID_CARD)){
-                String citizenIdCard = authentication.getOAuth2Request().getRequestParameters().get("citizenIdCard");
+                String citizenIdCard = authentication.getOAuth2Request().getRequestParameters().get("citizen_id_card");
                 additionalInfo = getAdditionalUserInfoCitizenIdCard(citizenIdCard, grantType);
             }
         }
