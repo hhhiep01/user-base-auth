@@ -90,7 +90,7 @@ public class AccountController extends ABasicController{
             apiMessageDto.setCode(ErrorCode.ACCOUNT_ERROR_USERNAME_EXIST);
             return apiMessageDto;
         }
-        account = accountRepository.findFirstByCitizenIdCardAndIssuanceDate(createAccountAdminForm.getCitizenIdCard(), createAccountAdminForm.getIssuanceDate());
+        account = accountRepository.findFirstByCitizenIdCard(createAccountAdminForm.getCitizenIdCard());
         if (account != null) {
             apiMessageDto.setResult(false);
             apiMessageDto.setCode(ErrorCode.ACCOUNT_ERROR_CITIZEN_ID_CARD_EXIST);
@@ -223,7 +223,7 @@ public class AccountController extends ABasicController{
             apiMessageDto.setCode(ErrorCode.ACCOUNT_ERROR_NOT_FOUND);
             return apiMessageDto;
         }
-        account = accountRepository.findFirstByCitizenIdCardAndIssuanceDate(updateProfileAdminForm.getCitizenIdCard(), updateProfileAdminForm.getIssuanceDate());
+        account = accountRepository.findFirstByCitizenIdCard(updateProfileAdminForm.getCitizenIdCard());
         if (account != null) {
             apiMessageDto.setResult(false);
             apiMessageDto.setCode(ErrorCode.ACCOUNT_ERROR_CITIZEN_ID_CARD_EXIST);

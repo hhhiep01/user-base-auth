@@ -13,7 +13,8 @@ public interface AccountRepository extends JpaRepository<Account, Long>, JpaSpec
     public Account findAccountByUsername(String username);
     public Account findAccountByEmail(String email);
     public Account findAccountByPhone(String phone);
-    public Account findFirstByCitizenIdCardAndIssuanceDate(String citizenIDCard, Date issuanceDate);
+    public Account findFirstByCitizenIdCardAndIssuanceDate(String citizenIdCard, Date issuanceDate);
+    public Account findFirstByCitizenIdCard(String citizenIdCard);
     public Account findAccountByResetPwdCode(String resetPwdCode);
     public Account findAccountByEmailOrUsername(String email, String username);
     public Page<Account> findAllByKind(int kind, Pageable pageable);
